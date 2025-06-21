@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      
+      #startButton {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px 40px;
+        font-size: 18px;
+        font-weight: bold;
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        font-family: 'Arial', sans-serif;
+        text-align: center;
+        line-height: 1.4;
+        max-width: 300px;
+      }
+      
+      #startButton:hover {
+        background: linear-gradient(45deg, #45a049, #4CAF50);
+        transform: translate(-50%, -50%) scale(1.05);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      }
+      
+      #startButton:active {
+        transform: translate(-50%, -50%) scale(0.95);
+      }
+      
+      #gameContainer {
+        display: none;
+      }
+      
+      #loadingText {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 18px;
+        color: white;
+        z-index: 999;
+        display: none;
+        font-family: 'Arial', sans-serif;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+      }
+      
+      /* 半透明背景 */
+      #startOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #startOverlay h1 {
+        font-size: 32px;
+        color: white;
+        margin-bottom: 20px;
+        position: absolute;
+        top: 150px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <audio id="complete-sound" src="./public/models/Quest Complete.mp3"></audio>
+       <audio id="pickup-sound" src="./public/models/Collectable.mp3"></audio>
+      <div id="startOverlay">
+        <h1>欢迎！点击开始游戏,我们一起冒险吧!</h1>
+        <button id="startButton">开始游戏</button>
+      </div>
+      <div id="loadingText">游戏加载中...</div>
+      <div id="gameContainer"></div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+    <script>// 安全播放函数
+      function playSound(soundId) {
+  const sound = document.getElementById(soundId);
+  if (sound) {
+    sound.currentTime = 0;
+    sound.play().catch(e => {
+      console.log(`${soundId} 播放被阻止，需要用户交互`);
+    });
+  }
+}
+      
+     // 暴露给全局（在main.js中使用）
+  
+  window.playCompleteSound = () => playSound('complete-sound'); // 保持原有兼容
+  window.playPickupSound = () => playSound('pickup-sound');    // 新增拾取音效
+  </script>
+  </body>
+</html>
